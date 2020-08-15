@@ -89,7 +89,7 @@ void output_txt(Mesh const& mesh)
     fclose(f);
     f = fopen("connect.txt", "w");
     for(auto&& q : mesh.connect)
-        fprintf(f, "%d %d %d %d\n", q[0], q[2], q[3], q[1]);
+        fprintf(f, "QUAD %d %d %d %d\n", q[0], q[2], q[3], q[1]);
     fclose(f);
 }
 void output(Mesh const& mesh)
@@ -101,42 +101,18 @@ void output(Mesh const& mesh)
 void output_csv(Mesh const& mesh, Mode const& mode)
 {
     char buf[33];
-    snprintf(buf, 32, "mode-x-%d.csv", mode.number);
+    snprintf(buf, 32, "mode-%d.csv", mode.number);
     FILE* f;
     f = fopen(buf, "w");
     for(int i = 0; i < mode.displacement.size(); ++i)
-        fprintf(f, "%lf,%lf,%lf,%lf\n",
+        fprintf(f, "%lf,%lf,%lf,%lf,%lf,%lf,%lf\n",
             mesh.nodes[i].x,
             mesh.nodes[i].y,
             mesh.nodes[i].z,
-            mode.displacement[i].x);
-    fclose(f);
-    snprintf(buf, 32, "mode-y-%d.csv", mode.number);
-    f = fopen(buf, "w");
-    for(int i = 0; i < mode.displacement.size(); ++i)
-        fprintf(f, "%lf,%lf,%lf,%lf\n",
-            mesh.nodes[i].x,
-            mesh.nodes[i].y,
-            mesh.nodes[i].z,
-            mode.displacement[i].y);
-    fclose(f);
-    snprintf(buf, 32, "mode-z-%d.csv", mode.number);
-    f = fopen(buf, "w");
-    for(int i = 0; i < mode.displacement.size(); ++i)
-        fprintf(f, "%lf,%lf,%lf,%lf\n",
-            mesh.nodes[i].x,
-            mesh.nodes[i].y,
-            mesh.nodes[i].z,
+            sqrt(mode.displacement[i].x * mode.displacement[i].x + mode.displacement[i].y * mode.displacement[i].y + mode.displacement[i].z * mode.displacement[i].z),
+            mode.displacement[i].x,
+            mode.displacement[i].y,
             mode.displacement[i].z);
-    fclose(f);
-    snprintf(buf, 32, "mode-mag-%d.csv", mode.number);
-    f = fopen(buf, "w");
-    for(int i = 0; i < mode.displacement.size(); ++i)
-        fprintf(f, "%lf,%lf,%lf,%lf\n",
-            mesh.nodes[i].x,
-            mesh.nodes[i].y,
-            mesh.nodes[i].z,
-            sqrt(mode.displacement[i].x * mode.displacement[i].x + mode.displacement[i].y * mode.displacement[i].y + mode.displacement[i].z * mode.displacement[i].z));
     fclose(f);
 }
 void output_txt(Mesh const& mesh, Mode const& mode)
@@ -162,8 +138,6 @@ Mode genMode(Mesh const& mesh, double L, double A, int n)
     rval.number = n;
     for(int i = 0; i < mesh.nodes.size(); ++i)
     {
-        // self-test; horrible complexity intentional
-        // - check node is captured by any element
         PT p, C = mesh.nodes[i];
         p.x = p.y = 0.0;
         double d = sqrt(C.x * C.x + C.y * C.y + C.z * C.z);

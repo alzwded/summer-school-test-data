@@ -2,7 +2,7 @@
   <ServerManagerState version="5.8.1">
     <Proxy group="animation" type="AnimationScene" id="263" servers="16">
       <Property name="AnimationTime" id="263.AnimationTime" number_of_elements="1">
-        <Element index="0" value="0"/>
+        <Element index="0" value="9"/>
       </Property>
       <Property name="Cues" id="263.Cues" number_of_elements="1">
         <Proxy value="265"/>
@@ -268,15 +268,15 @@
         <Domain name="range" id="5966.NumberOfTableValues.range"/>
       </Property>
       <Property name="RGBPoints" id="5966.RGBPoints" number_of_elements="12">
-        <Element index="0" value="2.24369"/>
+        <Element index="0" value="0.000043"/>
         <Element index="1" value="0.23137254902"/>
         <Element index="2" value="0.298039215686"/>
         <Element index="3" value="0.752941176471"/>
-        <Element index="4" value="51.121845"/>
+        <Element index="4" value="5.0000215"/>
         <Element index="5" value="0.865"/>
         <Element index="6" value="0.865"/>
         <Element index="7" value="0.865"/>
-        <Element index="8" value="100"/>
+        <Element index="8" value="10"/>
         <Element index="9" value="0.705882352941"/>
         <Element index="10" value="0.0156862745098"/>
         <Element index="11" value="0.149019607843"/>
@@ -335,11 +335,11 @@
         <Domain name="bool" id="5965.AllowDuplicateScalars.bool"/>
       </Property>
       <Property name="Points" id="5965.Points" number_of_elements="8">
-        <Element index="0" value="2.24369"/>
+        <Element index="0" value="0.000043"/>
         <Element index="1" value="0"/>
         <Element index="2" value="0.5"/>
         <Element index="3" value="0"/>
-        <Element index="4" value="100"/>
+        <Element index="4" value="10"/>
         <Element index="5" value="1"/>
         <Element index="6" value="0.5"/>
         <Element index="7" value="0"/>
@@ -5332,20 +5332,20 @@
     </Proxy>
     <Proxy group="sources" type="CSVReader" id="7977" servers="1">
       <Property name="FileName" id="7977.FileName" number_of_elements="10">
-        <Element index="0" value="d:\workdir\paraview\test_gen\plate\mode-mag-1.csv"/>
-        <Element index="1" value="d:\workdir\paraview\test_gen\plate\mode-mag-2.csv"/>
-        <Element index="2" value="d:\workdir\paraview\test_gen\plate\mode-mag-3.csv"/>
-        <Element index="3" value="d:\workdir\paraview\test_gen\plate\mode-mag-4.csv"/>
-        <Element index="4" value="d:\workdir\paraview\test_gen\plate\mode-mag-5.csv"/>
-        <Element index="5" value="d:\workdir\paraview\test_gen\plate\mode-mag-6.csv"/>
-        <Element index="6" value="d:\workdir\paraview\test_gen\plate\mode-mag-7.csv"/>
-        <Element index="7" value="d:\workdir\paraview\test_gen\plate\mode-mag-8.csv"/>
-        <Element index="8" value="d:\workdir\paraview\test_gen\plate\mode-mag-9.csv"/>
-        <Element index="9" value="d:\workdir\paraview\test_gen\plate\mode-mag-10.csv"/>
+        <Element index="0" value="d:\workdir\paraview\test_gen\plate\mode-1.csv"/>
+        <Element index="1" value="d:\workdir\paraview\test_gen\plate\mode-2.csv"/>
+        <Element index="2" value="d:\workdir\paraview\test_gen\plate\mode-3.csv"/>
+        <Element index="3" value="d:\workdir\paraview\test_gen\plate\mode-4.csv"/>
+        <Element index="4" value="d:\workdir\paraview\test_gen\plate\mode-5.csv"/>
+        <Element index="5" value="d:\workdir\paraview\test_gen\plate\mode-6.csv"/>
+        <Element index="6" value="d:\workdir\paraview\test_gen\plate\mode-7.csv"/>
+        <Element index="7" value="d:\workdir\paraview\test_gen\plate\mode-8.csv"/>
+        <Element index="8" value="d:\workdir\paraview\test_gen\plate\mode-9.csv"/>
+        <Element index="9" value="d:\workdir\paraview\test_gen\plate\mode-10.csv"/>
         <Domain name="files" id="7977.FileName.files"/>
       </Property>
       <Property name="FileNameInfo" id="7977.FileNameInfo" number_of_elements="1">
-        <Element index="0" value="d:\workdir\paraview\test_gen\plate\mode-mag-10.csv"/>
+        <Element index="0" value="d:\workdir\paraview\test_gen\plate\mode-10.csv"/>
       </Property>
       <Property name="TimestepValues" id="7977.TimestepValues" number_of_elements="10">
         <Element index="0" value="0"/>
@@ -5386,7 +5386,7 @@
     <Proxy group="misc" type="TimeKeeper" id="256" servers="16">
       <Property name="SuppressedTimeSources" id="256.SuppressedTimeSources"/>
       <Property name="Time" id="256.Time" number_of_elements="1">
-        <Element index="0" value="0"/>
+        <Element index="0" value="9"/>
         <Domain name="range" id="256.Time.range"/>
       </Property>
       <Property name="TimeLabel" id="256.TimeLabel" number_of_elements="1">
@@ -5870,7 +5870,7 @@
         <Element index="1" value="836"/>
       </Property>
       <Property name="ViewTime" id="308.ViewTime" number_of_elements="1">
-        <Element index="0" value="0"/>
+        <Element index="0" value="9"/>
         <Domain name="range" id="308.ViewTime.range"/>
       </Property>
       <Property name="CameraFocalDisk" id="308.CameraFocalDisk" number_of_elements="1">
@@ -6065,7 +6065,7 @@
         <Domain name="bool" id="8034.CenterAxesVisibility.bool"/>
       </Property>
       <Property name="CenterOfRotation" id="8034.CenterOfRotation" number_of_elements="3">
-        <Element index="0" value="0.5"/>
+        <Element index="0" value="0"/>
         <Element index="1" value="0"/>
         <Element index="2" value="0"/>
       </Property>
@@ -6379,11 +6379,11 @@
         <Element index="0" value="2"/>
       </Property>
       <Property name="ViewSize" id="8034.ViewSize" number_of_elements="2">
-        <Element index="0" value="957"/>
+        <Element index="0" value="1353"/>
         <Element index="1" value="836"/>
       </Property>
       <Property name="ViewTime" id="8034.ViewTime" number_of_elements="1">
-        <Element index="0" value="0"/>
+        <Element index="0" value="9"/>
         <Domain name="range" id="8034.ViewTime.range"/>
       </Property>
       <Property name="CameraFocalDisk" id="8034.CameraFocalDisk" number_of_elements="1">
@@ -6399,43 +6399,43 @@
         <Element index="0" value="0"/>
       </Property>
       <Property name="CameraFocalPoint" id="8034.CameraFocalPoint" number_of_elements="3">
-        <Element index="0" value="0.4999999999999989"/>
-        <Element index="1" value="3.522816701540247e-17"/>
-        <Element index="2" value="7.905339021689193e-19"/>
+        <Element index="0" value="100.77337898781877"/>
+        <Element index="1" value="-247.99980474022038"/>
+        <Element index="2" value="-99.0685355764644"/>
       </Property>
       <Property name="CameraFocalPointInfo" id="8034.CameraFocalPointInfo" number_of_elements="3">
-        <Element index="0" value="0.4999999999999989"/>
-        <Element index="1" value="3.522816701540247e-17"/>
-        <Element index="2" value="7.905339021689193e-19"/>
+        <Element index="0" value="100.77337898781877"/>
+        <Element index="1" value="-247.99980474022038"/>
+        <Element index="2" value="-99.0685355764644"/>
       </Property>
       <Property name="CameraParallelScale" id="8034.CameraParallelScale" number_of_elements="1">
-        <Element index="0" value="1414.6378573695038"/>
+        <Element index="0" value="1414.213562373095"/>
       </Property>
       <Property name="CameraParallelScaleInfo" id="8034.CameraParallelScaleInfo" number_of_elements="1">
-        <Element index="0" value="1414.6378573695038"/>
+        <Element index="0" value="1414.213562373095"/>
       </Property>
       <Property name="CameraPosition" id="8034.CameraPosition" number_of_elements="3">
-        <Element index="0" value="163.49725426515556"/>
-        <Element index="1" value="304.9861818981543"/>
-        <Element index="2" value="4503.885077271274"/>
+        <Element index="0" value="-2041.4457724633096"/>
+        <Element index="1" value="-2839.138781017048"/>
+        <Element index="2" value="4208.285916210191"/>
       </Property>
       <Property name="CameraPositionInfo" id="8034.CameraPositionInfo" number_of_elements="3">
-        <Element index="0" value="163.49725426515556"/>
-        <Element index="1" value="304.9861818981543"/>
-        <Element index="2" value="4503.885077271274"/>
+        <Element index="0" value="-2041.4457724633096"/>
+        <Element index="1" value="-2839.138781017048"/>
+        <Element index="2" value="4208.285916210191"/>
       </Property>
       <Property name="CameraViewAngle" id="8034.CameraViewAngle" number_of_elements="1">
         <Element index="0" value="30"/>
       </Property>
       <Property name="CameraViewUp" id="8034.CameraViewUp" number_of_elements="3">
-        <Element index="0" value="0.3222987783465198"/>
-        <Element index="1" value="0.9436174174215222"/>
-        <Element index="2" value="-0.07556233860249216"/>
+        <Element index="0" value="0.2455391457237467"/>
+        <Element index="1" value="0.7718748716320386"/>
+        <Element index="2" value="0.5864466816857921"/>
       </Property>
       <Property name="CameraViewUpInfo" id="8034.CameraViewUpInfo" number_of_elements="3">
-        <Element index="0" value="0.3222987783465198"/>
-        <Element index="1" value="0.9436174174215222"/>
-        <Element index="2" value="-0.07556233860249216"/>
+        <Element index="0" value="0.2455391457237467"/>
+        <Element index="1" value="0.7718748716320386"/>
+        <Element index="2" value="0.5864466816857921"/>
       </Property>
       <Property name="EyeAngle" id="8034.EyeAngle" number_of_elements="1">
         <Element index="0" value="2"/>
@@ -6498,7 +6498,7 @@
         <Element index="1" value="400"/>
       </Property>
       <Property name="ViewTime" id="5620.ViewTime" number_of_elements="1">
-        <Element index="0" value="0"/>
+        <Element index="0" value="9"/>
         <Domain name="range" id="5620.ViewTime.range"/>
       </Property>
     </Proxy>
@@ -6581,7 +6581,7 @@
     <ProxyCollection name="sources">
       <Item id="8495" name="Delaunay2D1" logname="Delaunay2D1"/>
       <Item id="8001" name="TableToPoints1" logname="TableToPoints1"/>
-      <Item id="7977" name="mode-mag-*" logname="mode-mag-*"/>
+      <Item id="7977" name="mode-*" logname="mode-*"/>
     </ProxyCollection>
     <ProxyCollection name="timekeeper">
       <Item id="256" name="TimeKeeper1"/>
