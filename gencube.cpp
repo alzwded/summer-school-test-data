@@ -182,7 +182,9 @@ Mode genMode(Mesh const& mesh, double L, double A, int64_t n)
             auto sqr = [](double d) -> double { return d*d; };
             return sqrt(sqr(p1.x - p2.x) + sqr(p1.y - p2.y) + sqr(p1.z - p2.z)) / L;
         };
-        double sx = (A/n) * sin(3.14159 * dist(C, PT{0.0, 0.0, 0.0}) * n);
+        auto d = dist(C, PT{0.0, 0.0, 0.0});
+        if(d < 0.1) d = 0.1;
+        double sx = (A/n/d) * sin(3.14159 * dist(C, PT{0.0, 0.0, 0.0}) * n);
         p.x = sx * useX / (useX + useY + useZ);
         p.y = sx * useY / (useX + useY + useZ);
         p.z = sx * useZ / (useX + useY + useZ);
