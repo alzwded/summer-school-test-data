@@ -1,0 +1,9 @@
+*.exe
+genplate
+plate/
+*.txt
+*.csv
+gencube
+cube/
+*.sw*
+*~
