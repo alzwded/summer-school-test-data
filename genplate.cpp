@@ -92,7 +92,7 @@ void output_txt(Mesh const& mesh)
     fclose(f);
     f = fopen("connect.txt", "w");
     for(auto&& q : mesh.connect)
-        fprintf(f, "QUAD %d %d %d %d\n", q[0], q[2], q[3], q[1]);
+        fprintf(f, "QUAD %d %d %d %d\n", q[0], q[1], q[3], q[2]);
     fclose(f);
 }
 void output(Mesh const& mesh)
@@ -129,10 +129,36 @@ void output_txt(Mesh const& mesh, Mode const& mode)
     }
     fclose(f);
 }
+void output_tec(Mesh const& mesh, Mode const& mode)
+{
+    char buf[33];
+    snprintf(buf, 32, "mode-%lld.tec", mode.number);
+    FILE* f = fopen(buf, "w");
+    fprintf(f, R"(TITLE = "Example: FE-Volume Brick Data"
+VARIABLES = "X", "Y", "Z", "dx", "dy", "dz", "mag"
+ZONE N=%d, E=%d, DATAPACKING=POINT, ZONETYPE=FEQUADRILATERAL
+)", (int)mesh.nodes.size(), (int)mesh.connect.size());
+    for(int64_t i = 0; i < mode.displacement.size(); ++i) {
+        auto&& p = mode.displacement[i];
+        auto&& n = mesh.nodes[i];
+        fprintf(f, "%lf %lf %lf %lf %lf %lf %lf\n", n.x, n.y, n.z, p.x, p.y, p.z,
+            sqrt(mode.displacement[i].x * mode.displacement[i].x + mode.displacement[i].y * mode.displacement[i].y + mode.displacement[i].z * mode.displacement[i].z));
+    }
+    fprintf(f, "\n");
+    for(int i = 0; i < mesh.connect.size(); ++i) {
+        fprintf(f, "%lld %lld %lld %lld\n",
+            mesh.connect[i][0]+ 1,
+            mesh.connect[i][1]+ 1,
+            mesh.connect[i][3]+ 1,
+            mesh.connect[i][2]+ 1);
+    }
+    fclose(f);
+}
 void output(Mesh const& mesh, Mode const& mode)
 {
     output_csv(mesh, mode);
     output_txt(mesh, mode);
+    output_tec(mesh, mode);
 }
 
 Mode genMode(Mesh const& mesh, double L, double A, int n)
