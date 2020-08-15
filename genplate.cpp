@@ -1,8 +1,12 @@
+// compile with:
+//    cl.exe /EHa /O2 /openmp /std:c++17 genplate.cpp
+//    gcc -fopenmp -o genplate -O3 genplate.cpp -lm
 #include <cstdio>
 #include <map>
 #include <vector>
 #include <cstdlib>
 #include <cmath>
+#include <array>
 
 struct PT
 {
@@ -63,19 +67,18 @@ Mesh genMesh(int N, double L)
         fprintf(f, "%d*%d=%d %d\n", i / N, i % N, i, rval.nodeIds[i]);
     }
     // fixup nodeIds
-    std::vector<std::vector<QD>::iterator> toErase;
-    for(int i = 0; i < rval.connect.size(); ++i) {
+    decltype(rval.connect) newConnect;
+    for(int64_t i = 0; i < rval.connect.size(); ++i) {
         bool erase = false;
-        for(int j = 0; j < rval.connect[i].size(); ++j) {
+        for(int64_t j = 0; j < rval.connect[i].size(); ++j) {
             fprintf(g, "%d => %d\n", rval.connect[i][j], rval.nodeIds[rval.connect[i][j]]);
             rval.connect[i][j] = rval.nodeIds[rval.connect[i][j]];
             if(rval.connect[i][j] == -1) erase = true;
         }
-        if(erase) toErase.push_back(rval.connect.begin() + i);
+        if(!erase) newConnect.push_back(rval.connect[i]);
     }
-    // remove bullshit elements
-    for(auto i = toErase.rbegin(); i != toErase.rend(); ++i)
-        rval.connect.erase(*i);
+    std::swap(rval.connect, newConnect);
+    fclose(f); fclose(g);
     return rval;
 }
 
@@ -164,7 +167,9 @@ int main(int argc, char* argv[])
     printf("Writing mesh\n");
     output(mesh);
 
-    for(int i = 0; i < M; ++i)
+    int i;
+    #pragma omp parallel for
+    for(i = 0; i < M; ++i)
     {
         printf("Generating mode %d\n", i + 1);
         auto mode = genMode(mesh, L, A, i + 1);

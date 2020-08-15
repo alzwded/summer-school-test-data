@@ -7,3 +7,4 @@ gencube
 cube/
 *.sw*
 *~
+*.obj
