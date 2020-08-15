@@ -14,7 +14,7 @@ cube: gencube.exe
 cube32: gencube.exe
 	mkdir -p cube32
 	cd cube32 && rm -f *.txt *.csv && ../gencube 32 2000 100 16
-.PHONY: cube
+.PHONY: cube32
 
 cube16: gencube.exe
 	cd cube16 && rm -f *.txt *.csv && ../gencube 16 2000 100 16 
