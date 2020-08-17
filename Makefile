@@ -2,12 +2,12 @@ all: plate cube16 cube32 cube
 
 plate: genplate.exe
 	mkdir -p plate
-	cd plate && rm -f *.txt *.csv *.tec && ../genplate 100 2000 100 100
+	cd plate && rm -f *.txt *.csv *.tec && ../genplate.exe 100 2000 100 100
 .PHONY: plate
 
 cube: gencube.exe
 	mkdir -p cube
-	cd cube && rm -f *.txt *.csv *.tec && ../gencube 100 2000 100 16
+	cd cube && rm -f *.txt *.csv *.tec && ../gencube.exe 100 2000 100 16
 .PHONY: cube
 
 cube32: gencube.exe
@@ -20,7 +20,7 @@ cube16: gencube.exe
 .PHONY: cube16
 
 %.exe: %.cpp
-	g++ -fopenmp -o $@ -O3 $< -lm
+	g++ -march=sandybridge -fopenmp -o $@ -O3 $< -lm
 
 clean:
-	rm -f *.exe cube cube16 cube32 plate *.obj
+	rm -rf *.exe cube cube16 cube32 plate *.obj *.ilk *.pdb

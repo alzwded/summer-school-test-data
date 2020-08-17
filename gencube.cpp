@@ -95,6 +95,7 @@ Mesh genMesh(int64_t N, double L)
 }
 
 void output_csv(Mesh const& mesh) {}
+void output_tec(Mesh const& mesh) {}
 void output_txt(Mesh const& mesh)
 {
     FILE* f;
@@ -119,8 +120,9 @@ void output_txt(Mesh const& mesh)
 }
 void output(Mesh const& mesh)
 {
-    output_csv(mesh);
+    //output_csv(mesh);
     output_txt(mesh);
+    output_tec(mesh);
 }
 
 void output_csv(Mesh const& mesh, Mode const& mode)
@@ -151,7 +153,7 @@ void output_txt(Mesh const& mesh, Mode const& mode)
     }
     fclose(f);
 }
-void output_tecplot(Mesh const& mesh, Mode const& mode)
+void output_tec(Mesh const& mesh, Mode const& mode)
 {
     char buf[33];
     snprintf(buf, 32, "mode-%lld.tec", mode.number);
@@ -182,9 +184,9 @@ ZONE N=%d, E=%d, DATAPACKING=POINT, ZONETYPE=FEBRICK
 }
 void output(Mesh const& mesh, Mode const& mode)
 {
-    output_csv(mesh, mode);
+    //output_csv(mesh, mode);
     output_txt(mesh, mode);
-    output_tecplot(mesh, mode);
+    output_tec(mesh, mode);
 }
 
 Mode genMode(Mesh const& mesh, double L, double A, int64_t n)
@@ -214,7 +216,7 @@ Mode genMode(Mesh const& mesh, double L, double A, int64_t n)
         };
         auto d = dist(C, PT{0.0, 0.0, 0.0});
         if(d < 0.1) d = 0.1;
-        double sx = (A/n/d) * sin(3.14159 * dist(C, PT{0.0, 0.0, 0.0}) * n);
+        double sx = (A/n/(1/d)) * sin(3.14159 * dist(C, PT{0.0, 0.0, 0.0}) * n);
         p.x = sx * useX / (useX + useY + useZ);
         p.y = sx * useY / (useX + useY + useZ);
         p.z = sx * useZ / (useX + useY + useZ);

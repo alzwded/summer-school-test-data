@@ -83,6 +83,7 @@ Mesh genMesh(int N, double L)
 }
 
 void output_csv(Mesh const& mesh) {}
+void output_tec(Mesh const& mesh) {}
 void output_txt(Mesh const& mesh)
 {
     FILE* f;
@@ -97,8 +98,9 @@ void output_txt(Mesh const& mesh)
 }
 void output(Mesh const& mesh)
 {
-    output_csv(mesh);
+    //output_csv(mesh);
     output_txt(mesh);
+    output_tec(mesh);
 }
 
 void output_csv(Mesh const& mesh, Mode const& mode)
@@ -132,7 +134,7 @@ void output_txt(Mesh const& mesh, Mode const& mode)
 void output_tec(Mesh const& mesh, Mode const& mode)
 {
     char buf[33];
-    snprintf(buf, 32, "mode-%lld.tec", mode.number);
+    snprintf(buf, 32, "mode-%d.tec", mode.number);
     FILE* f = fopen(buf, "w");
     fprintf(f, R"(TITLE = "Example: FE-Volume Brick Data"
 VARIABLES = "X", "Y", "Z", "dx", "dy", "dz", "mag"
@@ -146,7 +148,7 @@ ZONE N=%d, E=%d, DATAPACKING=POINT, ZONETYPE=FEQUADRILATERAL
     }
     fprintf(f, "\n");
     for(int i = 0; i < mesh.connect.size(); ++i) {
-        fprintf(f, "%lld %lld %lld %lld\n",
+        fprintf(f, "%d %d %d %d\n",
             mesh.connect[i][0]+ 1,
             mesh.connect[i][1]+ 1,
             mesh.connect[i][3]+ 1,
@@ -156,7 +158,7 @@ ZONE N=%d, E=%d, DATAPACKING=POINT, ZONETYPE=FEQUADRILATERAL
 }
 void output(Mesh const& mesh, Mode const& mode)
 {
-    output_csv(mesh, mode);
+    //output_csv(mesh, mode);
     output_txt(mesh, mode);
     output_tec(mesh, mode);
 }
