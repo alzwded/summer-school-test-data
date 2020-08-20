@@ -137,7 +137,7 @@ void output_tec(Mesh const& mesh, Mode const& mode)
     snprintf(buf, 32, "mode-%d.tec", mode.number);
     FILE* f = fopen(buf, "w");
     fprintf(f, R"(TITLE = "Example: FE-Volume Brick Data"
-VARIABLES = "X", "Y", "Z", "dx", "dy", "dz", "mag"
+VARIABLES = "X", "Y", "Z", "dX", "dY", "dZ", "mag"
 ZONE N=%d, E=%d, DATAPACKING=POINT, ZONETYPE=FEQUADRILATERAL
 )", (int)mesh.nodes.size(), (int)mesh.connect.size());
     for(int64_t i = 0; i < mode.displacement.size(); ++i) {
