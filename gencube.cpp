@@ -114,7 +114,7 @@ void output_txt(Mesh const& mesh)
     for(auto&& h : mesh.connect)
     {
         if((cc++ % (cn / 10)) == 0) printf("...writing connect %f%%\n", 100.0f * cc / cn);
-        fprintf(f, "HEX %lld %lld %lld %lld %lld %lld %lld %lld\n", h[0], h[1], h[2], h[3], h[4], h[5], h[6], h[7]);
+        fprintf(f, "HE %lld %lld %lld %lld %lld %lld %lld %lld\n", h[0], h[1], h[2], h[3], h[4], h[5], h[6], h[7]);
     }
     fclose(f);
 }

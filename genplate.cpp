@@ -93,7 +93,7 @@ void output_txt(Mesh const& mesh)
     fclose(f);
     f = fopen("connect.txt", "w");
     for(auto&& q : mesh.connect)
-        fprintf(f, "QUAD %d %d %d %d\n", q[0], q[1], q[3], q[2]);
+        fprintf(f, "QU %d %d %d %d\n", q[0], q[1], q[3], q[2]);
     fclose(f);
 }
 void output(Mesh const& mesh)
