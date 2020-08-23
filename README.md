@@ -12,7 +12,7 @@ If you run `make`, it will generate the following:
 - a 32x32x32 cube with a hole in it and 16 harmonic modes
 - a 100x100x100 cube with a hole in it and 16 harmonic modes
 
-If you're on windows, you need to run `make` in "x64 Native Tools Command Prompt for VS 2019", because it requires a pretty up-to-date compiler and OpenMP support. See also [vstools.png](vstools.png).
+If you're on windows, you need to run `make` in "x64 Native Tools Command Prompt for VS 2019", because it requires a pretty up-to-date compiler and OpenMP support. See also ![vstools.png](vstools.png).
 
 ParaView
 --------
