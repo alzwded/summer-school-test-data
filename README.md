@@ -14,6 +14,8 @@ If you run `make`, it will generate the following:
 
 If you're on windows, you need to run `make` in "x64 Native Tools Command Prompt for VS 2019", because it requires a pretty up-to-date compiler and OpenMP support. See also ![vstools.png](vstools.png).
 
+If you're on Linux on a distro like CentOS 7, you need a modern compiler like gcc 7.3.1 obtained via scl and devtoolset-7; in that case, run `scl enable devtoolset-7 'make'`. It *should* work out of the box on Ubuntu & friends. If you get errors like "something something sandybridge", you can remove the compiler flags to get it to compile in legacy Pentium II mode, single threaded; it will work, but slowly.
+
 ParaView
 --------
 

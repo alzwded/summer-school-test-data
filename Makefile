@@ -12,11 +12,12 @@ cube: gencube.exe
 
 cube32: gencube.exe
 	mkdir -p cube32
-	cd cube32 && rm -f *.txt *.csv *.tec && ../gencube 32 2000 100 16
+	cd cube32 && rm -f *.txt *.csv *.tec && ../gencube.exe 32 2000 100 16
 .PHONY: cube32
 
 cube16: gencube.exe
-	cd cube16 && rm -f *.txt *.csv *.tec && ../gencube 16 2000 100 16 
+	mkdir -p cube16
+	cd cube16 && rm -f *.txt *.csv *.tec && ../gencube.exe 16 2000 100 16 
 .PHONY: cube16
 
 %.exe: %.cpp
