@@ -8,36 +8,38 @@
 #include <vector>
 #include <array>
 #include <omp.h>
+#include <cstdint>
+#include <algorithm>
 
 struct PT
 {
     double x, y, z;
 };
 
-typedef std::array<int64_t, 8> HE;
+typedef std::array<int32_t, 8> HE;
 
 struct Mesh
 {
     std::vector<PT> nodes;
-    std::vector<int64_t> nodeIds;
+    std::vector<int32_t> nodeIds;
     std::vector<HE> connect;
 };
 
 struct Mode
 {
-    int64_t number;
+    int32_t number;
     std::vector<PT> displacement;
 };
 
-Mesh genMesh(int64_t N, double L)
+Mesh genMesh(int32_t N, double L)
 {
     FILE*g = fopen("debug2.txt", "w");
     Mesh rval;
     rval.nodeIds.resize(N * N * N, -1);
-    for(int64_t k = 0; k < N; ++k) {
+    for(int32_t k = 0; k < N; ++k) {
       printf("...generating 1/2  %f%%\n", 100.0f*(float)k/N);
-      for(int64_t i = 0; i < N; ++i) {
-        for(int64_t j = 0; j < N; ++j) {
+      for(int32_t i = 0; i < N; ++i) {
+        for(int32_t j = 0; j < N; ++j) {
             // poke a hole in the mesh if it's big enough:-)
             if((N >= 16
                 &&! (i >= 4.0 / 8 * N && i < 5.0 / 8 * N &&
@@ -61,7 +63,7 @@ Mesh genMesh(int64_t N, double L)
                     (k + 1) * N * N + (i + 1) * N + j + 1,
                     (k + 1) * N * N + (i + 1) * N + j,
                 });
-                fprintf(g, "%lld %lld %lld %lld %lld %lld %lld %lld\n",
+                fprintf(g, "%ld %ld %ld %ld %ld %ld %ld %ld\n",
                     rval.connect.back()[0],
                     rval.connect.back()[1],
                     rval.connect.back()[2],
@@ -75,15 +77,15 @@ Mesh genMesh(int64_t N, double L)
       }
     }
     FILE* f = fopen("debug.txt", "w");
-    for(int64_t i = 0; i < N*N*N; ++i) {
-        fprintf(f, "%lld*%lld*%lld=%lld %lld\n", i / N / N, i / N, i % N, i, rval.nodeIds[i]);
+    for(int32_t i = 0; i < N*N*N; ++i) {
+        fprintf(f, "%ld*%ld*%ld=%ld %ld\n", i / N / N, i / N, i % N, i, rval.nodeIds[i]);
     }
     decltype(rval.connect) newConnect;
-    for(int64_t i = 0; i < rval.connect.size(); ++i) {
+    for(int32_t i = 0; i < rval.connect.size(); ++i) {
         if(i % (N*N) == 0) printf("...generating 2/2  %f%%\n", 100.0f*(float)i/rval.connect.size());
         bool erase = false;
-        for(int64_t j = 0; j < rval.connect[i].size(); ++j) {
-            fprintf(g, "%lld => %lld\n", rval.connect[i][j], rval.nodeIds[rval.connect[i][j]]);
+        for(int32_t j = 0; j < rval.connect[i].size(); ++j) {
+            fprintf(g, "%ld => %ld\n", rval.connect[i][j], rval.nodeIds[rval.connect[i][j]]);
             rval.connect[i][j] = rval.nodeIds[rval.connect[i][j]];
             if(rval.connect[i][j] == -1) erase = true;
         }
@@ -96,6 +98,29 @@ Mesh genMesh(int64_t N, double L)
 
 void output_csv(Mesh const& mesh) {}
 void output_tec(Mesh const& mesh) {}
+void output_bin(Mesh const& mesh)
+{
+    FILE* f;
+    f = fopen("nodes.bin", "wb");
+    int cc, cn;
+    cc = 0;
+    cn = mesh.nodes.size();
+    for(auto&& n : mesh.nodes) {
+        if((cc++ % (cn / 10)) == 0) printf("...writing nodes %f%%\n", 100.0f * cc / cn);
+        float fl[] = { n.x, n.y, n.z };
+        fwrite(fl, sizeof(fl[0]), sizeof(fl)/sizeof(fl[0]), f);
+    }
+    fclose(f);
+    f = fopen("connect.bin", "wb");
+    cc = 0;
+    cn = mesh.connect.size();
+    for(auto&& h : mesh.connect)
+    {
+        if((cc++ % (cn / 10)) == 0) printf("...writing connect %f%%\n", 100.0f * cc / cn);
+        fwrite(h.data(), sizeof(decltype(h[0])), h.size(), f);
+    }
+    fclose(f);
+}
 void output_txt(Mesh const& mesh)
 {
     FILE* f;
@@ -114,7 +139,7 @@ void output_txt(Mesh const& mesh)
     for(auto&& h : mesh.connect)
     {
         if((cc++ % (cn / 10)) == 0) printf("...writing connect %f%%\n", 100.0f * cc / cn);
-        fprintf(f, "HE %lld %lld %lld %lld %lld %lld %lld %lld\n", h[0], h[1], h[2], h[3], h[4], h[5], h[6], h[7]);
+        fprintf(f, "HE %ld %ld %ld %ld %ld %ld %ld %ld\n", h[0], h[1], h[2], h[3], h[4], h[5], h[6], h[7]);
     }
     fclose(f);
 }
@@ -122,16 +147,17 @@ void output(Mesh const& mesh)
 {
     //output_csv(mesh);
     output_txt(mesh);
-    output_tec(mesh);
+    //output_tec(mesh);
+    output_bin(mesh);
 }
 
 void output_csv(Mesh const& mesh, Mode const& mode)
 {
     char buf[33];
-    snprintf(buf, 32, "mode-%lld.csv", mode.number);
+    snprintf(buf, 32, "mode-%ld.csv", mode.number);
     FILE* f;
     f = fopen(buf, "w");
-    for(int64_t i = 0; i < mode.displacement.size(); ++i)
+    for(int32_t i = 0; i < mode.displacement.size(); ++i)
         fprintf(f, "%lf,%lf,%lf,%lf,%lf,%lf,%lf\n",
             mesh.nodes[i].x,
             mesh.nodes[i].y,
@@ -145,24 +171,53 @@ void output_csv(Mesh const& mesh, Mode const& mode)
 void output_txt(Mesh const& mesh, Mode const& mode)
 {
     char buf[33];
-    snprintf(buf, 32, "mode-%lld.txt", mode.number);
+    snprintf(buf, 32, "mode-%ld.txt", mode.number);
     FILE* f = fopen(buf, "w");
-    for(int64_t i = 0; i < mode.displacement.size(); ++i) {
+    for(int32_t i = 0; i < mode.displacement.size(); ++i) {
         auto&& p = mode.displacement[i];
         fprintf(f, "%lf %lf %lf\n", p.x, p.y, p.z);
     }
     fclose(f);
 }
+void output_bin(Mesh const& mesh, Mode const& mode)
+{
+    char buf[33];
+    float minmax[8] = {
+        999999.0f, 999999.0f, 999999.0f, 999999.0f,
+        -999999.0f, -999999.0f, -999999.0f, -999999.0f,
+    };
+    snprintf(buf, 32, "mode-%ld.bin", mode.number);
+    FILE* f = fopen(buf, "wb");
+    for(int32_t i = 0; i < mode.displacement.size(); ++i) {
+        auto&& p = mode.displacement[i];
+        float pl[] = { p.x, p.y, p.z };
+        minmax[0] = std::min(minmax[0], (float)p.x);
+        minmax[1] = std::min(minmax[1], (float)p.y);
+        minmax[2] = std::min(minmax[2], (float)p.z);
+        minmax[3] = std::min(minmax[3], (float)sqrt(p.x*p.x + p.y*p.y + p.z*p.z));
+        minmax[4] = std::max(minmax[4], (float)p.x);
+        minmax[5] = std::max(minmax[5], (float)p.y);
+        minmax[6] = std::max(minmax[6], (float)p.z);
+        minmax[7] = std::max(minmax[7], (float)sqrt(p.x*p.x + p.y*p.y + p.z*p.z));
+        fwrite(pl, sizeof(pl[0]), sizeof(pl)/sizeof(pl[0]), f);
+
+    }
+    fclose(f);
+    snprintf(buf, 32, "minmax-%ld.bin", mode.number);
+    f = fopen(buf, "wb");
+    fwrite(minmax, sizeof(minmax[0]), sizeof(minmax)/sizeof(minmax[0]), f);
+    fclose(f);
+}
 void output_tec(Mesh const& mesh, Mode const& mode)
 {
     char buf[33];
-    snprintf(buf, 32, "mode-%lld.tec", mode.number);
+    snprintf(buf, 32, "mode-%ld.tec", mode.number);
     FILE* f = fopen(buf, "w");
     fprintf(f, R"(TITLE = "Example: FE-Volume Brick Data"
 VARIABLES = "X", "Y", "Z", "dX", "dY", "dZ", "mag"
 ZONE N=%d, E=%d, DATAPACKING=POINT, ZONETYPE=FEBRICK
 )", (int)mesh.nodes.size(), (int)mesh.connect.size());
-    for(int64_t i = 0; i < mode.displacement.size(); ++i) {
+    for(int32_t i = 0; i < mode.displacement.size(); ++i) {
         auto&& p = mode.displacement[i];
         auto&& n = mesh.nodes[i];
         fprintf(f, "%lf %lf %lf %lf %lf %lf %lf\n", n.x, n.y, n.z, p.x, p.y, p.z,
@@ -170,7 +225,7 @@ ZONE N=%d, E=%d, DATAPACKING=POINT, ZONETYPE=FEBRICK
     }
     fprintf(f, "\n");
     for(int i = 0; i < mesh.connect.size(); ++i) {
-        fprintf(f, "%lld %lld %lld %lld %lld %lld %lld %lld\n",
+        fprintf(f, "%ld %ld %ld %ld %ld %ld %ld %ld\n",
             mesh.connect[i][0]+ 1,
             mesh.connect[i][1]+ 1,
             mesh.connect[i][2]+ 1,
@@ -186,17 +241,18 @@ void output(Mesh const& mesh, Mode const& mode)
 {
     //output_csv(mesh, mode);
     output_txt(mesh, mode);
-    output_tec(mesh, mode);
+    //output_tec(mesh, mode);
+    output_bin(mesh, mode);
 }
 
-Mode genMode(Mesh const& mesh, double L, double A, int64_t n)
+Mode genMode(Mesh const& mesh, double L, double A, int32_t n)
 {
     Mode rval;
     rval.number = n;
     int cn = mesh.nodes.size(), cc = 0;
-    for(int64_t i = 0; i < mesh.nodes.size(); ++i)
+    for(int32_t i = 0; i < mesh.nodes.size(); ++i)
     {
-        if((cc++ % (cn / 10)) == 0) printf("...mode %lld processed %f%% nodes\n", n, 100.f * cc / cn);
+        if((cc++ % (cn / 10)) == 0) printf("...mode %ld processed %f%% nodes\n", n, 100.f * cc / cn);
         PT p, C = mesh.nodes[i];
         int combos[] = {
             1,
@@ -232,10 +288,10 @@ int main(int argc, char* argv[])
         exit(1);
     }
 
-    int64_t N = atoi(argv[1]);
+    int32_t N = atoi(argv[1]);
     double L = atof(argv[2]);
     double A = atof(argv[3]);
-    int64_t M = atoi(argv[4]);
+    int32_t M = atoi(argv[4]);
     printf("Probably using %d\n", omp_get_max_threads());
 
     printf("Generating mesh\n");
